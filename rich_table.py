@@ -1,9 +1,6 @@
 from rich.console import Console
 from rich.table import Table
 
-from rich.table import Table
-from rich.console import Console
-
 # Data: List of dictionaries
 students = [
     {"name": "Low", "id": "243", "time": 25, "score": 10},
