@@ -1,31 +1,70 @@
-##--Quiz login--##
 import json
-def save_creds(name,id):
-     creds = {"Name":name, "ID":id}
-     with open ("credentials.json","W") as file:
-       json.dump(creds,file)
-     print ("Name and ID Saved Successfully")
+import os
+
+user = {}
+
+def load_user():
+    if os.path.exists("user.json"):
+        with open("user.json","r") as file:
+            return json.load(file)
+    return {}
+   
+def save_user():
+   with open ("user.json","w") as file:
+       json.dump (user, file)
+
+def create_Account():
+    name = input("Enter Your Name: ")
+    if name in user:
+        print("Username Already Exist! Try Annother One.") 
+        create_Account()
+   
+    else:
+        password = input ("Enter A New Password: ")
+        user[name] = password
+        save_user()
+        print ("Account created Successfully!!!")
+        login()
+        
 
 def login():
-    correct_name = "Yuu"
-    correct_id = "0808"
-    attempts = 0
-    
-    while attempts < 3:
-      name = input("Enter Your Name:")
-      id = input("Enter Your Student ID:")
-
-      if name == correct_name and id == correct_id:
-        print ("Login Sucessful!")
-        save_option = input("Do You Want To Save Your Credentials? (Yes/No):").strip().lower()
-      if save_option == "Yes":
-        save_creds(name,id)
-        return True
+    name = input("Enter Your Name: ")
+    if name not in user:
+       print ("Name Does Not Exist! Try Again...")
+       login()
     else:
-        print ("Login Failed.Please Try Again.")
-        attempts += 1
+        attempts = 3
+        while attempts > 0:
+            id = input("Enter Your Password/ID: ")
+            if user[name] == id:
+                print ("Login Sucessful!")
+                play_game()
+                return 
+            else:
+                attempts -= 1
+                print ("Login Failed.Please Try Again.")
         print("Too Many Attempts!!! BYE BYE.")
-        return False
+        exit()
 
+def play_game():
+   print ("Welcome to THE MATH QUIZ!")
 
-print ("Welcome to THE MATH QUIZ!")
+def main():
+    global user
+    user = load_user()
+    print("Welcome To The Quiz!")
+    choice = input ("Do You Have an Existing Account? (yes/no): ").lower()
+    if choice == "yes" :
+        login()
+
+    elif choice == "no" :
+        create_Account()
+
+    else: 
+        print ("Not An Option. Please Enter YES or NO. ")
+        main()
+
+if __name__ == "__main__":
+  main()
+
+      
