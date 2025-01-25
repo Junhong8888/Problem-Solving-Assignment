@@ -28,7 +28,10 @@ def create_Account():
         
 
 def login():
-    name = input("Enter Your Name: ")
+    name = input("Enter Your Name (Type 'Back' To Return Main Menu):  ")
+    if name.lower() == "back" :
+        main()
+        return
     if name not in user:
        print ("Name Does Not Exist! Try Again...")
        login()
@@ -44,7 +47,7 @@ def login():
                 attempts -= 1
                 print ("Login Failed.Please Try Again.")
         print("Too Many Attempts!!! BYE BYE.")
-        exit()
+        main()
 
 def play_game():
    print ("Welcome to THE MATH QUIZ!")
