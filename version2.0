@@ -1,0 +1,83 @@
+import json
+import os
+
+# Global variable to store user data
+user_data = {"user_info": []}
+
+def load_user():
+    if os.path.exists("user.json"):
+        with open("user.json", "r") as file:
+            return json.load(file)
+    return {"user_info": []}  
+
+def save_user():
+    with open("user.json", "w") as file:
+        json.dump(user_data, file, indent=4)  
+
+def create_account():
+    name = input("To Create Account, Enter A Name: ")
+    
+    for user in user_data["user_info"]:
+        if user["Name"] == name:
+            print("Username Already Exists! Try Another One.")
+            create_account()
+            return
+    
+    password = input("Enter A New Password: ")
+    new_user = {"Name": name, "Password": password}
+    user_data["user_info"].append(new_user)  
+    save_user()  
+    print("Account Created Successfully!!!")
+    login()
+
+def login():
+    name = input("Enter Your Name (Type 'Back' To Return Main Menu): ")
+    if name.lower() == "back":
+        main()
+        return
+    
+    user_found = None
+    for user in user_data["user_info"]:
+        if user["Name"] == name:
+            user_found = user
+            break
+    
+    if not user_found:
+        print("Name Does Not Exist! Try Again...")
+        login()
+        return
+    
+    attempts = 3
+    while attempts > 0:
+        password = input("Enter Your Password: ")
+        if user_found["Password"] == password:
+            print("Login Successful!")
+            play_game()
+            return
+        else:
+            attempts -= 1
+            print(f"Login Failed. {attempts} attempts remaining.")
+    
+    print("Too Many Attempts!!! BYE BYE.")
+    main()
+
+def play_game():
+    """Placeholder for the game logic."""
+    print("Welcome to THE MATH QUIZ!")
+
+def main():
+    global user_data
+    user_data = load_user()  
+    print("Welcome To The Quiz!")
+    choice = input("Do You Have an Existing Account? (yes/no): ").lower()
+    
+    if choice == "yes":
+        login()
+    elif choice == "no":
+        create_account()
+    else:
+        print("Not An Option. Please Enter YES or NO.")
+        main()
+
+if __name__ == "__main__":
+    main()
