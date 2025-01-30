@@ -1,0 +1,5 @@
+Name          Password    Time        Score    rank
+------------  ----------  --------  -------  ------
+jia le        terry       00:04:23       12       1
+Sam           243         00:00:05        4       2
+Low Jun Hong  242         00:00:11        1       3
